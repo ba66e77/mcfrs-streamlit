@@ -4,7 +4,7 @@ import streamlit as st
 
 # connect to db share 'md:_share/mcfrs/7aef3ea1-e3f1-4dfa-bbf8-afcd60347bc0'
 conn = duckdb.connect(f'md:?motherduck_token={st.secrets["motherduck"]["token"]}')
-conn.sql("use mcfrs_share")
+conn.sql("use mcfrs")
 
 station_data = conn.sql("from overall_station_summary order by avg_monthly_incidents desc").fetchdf()
 
