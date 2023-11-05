@@ -20,7 +20,7 @@ max_report, min_report, latest_update = conn.execute(max_min_query).fetchone()
 
 station_data = conn.sql("from overall_station_summary order by avg_monthly_incidents desc").fetchdf()
 
-if 'station_filter' in st.session_state:
+if 'station_filter' in st.session_state and st.session_state.station_filter is not None:
     station_filter = f'where station_number = {st.session_state.station_filter}'
 else:
     station_filter = ''
@@ -59,13 +59,10 @@ st.dataframe(
 # Average incidents in each momth
 st.markdown("## Average incidents in each month")
 st.selectbox(
-    		"Filter to a station",
+    		"Filter on station number",
              key = 'station_filter',
              options=station_data['station_number'],
-             placeholder = "All stations"
+             placeholder = "All stations", 
+             index=None
 			 )
-st.dataframe(
-    monthly_data,
-    hide_index=True
-)
 st.line_chart(monthly_data, x='month', y='avg_incidents')
